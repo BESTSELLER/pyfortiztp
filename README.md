@@ -1,4 +1,4 @@
-# pyfortimanager
+# pyfortiztp
 Python API client library for Fortinet's [FortiZTP](https://fortiztp.forticloud.com).
 
 The FortiZTP Cloud API provides:
