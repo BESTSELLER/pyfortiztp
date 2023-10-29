@@ -13,7 +13,12 @@ Alternatively, you can clone the repo and run `python setup.py install`.
 ## Quick Start
 To begin, import pyfortiztp and instantiate the API.
 
-We need to provide our API credentials to our FortiCloud account. Optionally, its possible to set `forticloud_host` which defaults to `https://customerapiauth.fortinet.com`, `fortiztp_host` which defaults to `https://fortiztp.forticloud.com` and `client_id` which defaults to `fortiztp`.
+We need to provide our API credentials to our FortiCloud account.
+
+Optionally, its possible to set the following settings:
+- `client_id` which defaults to `fortiztp`.
+- `forticloud_host` which defaults to `https://customerapiauth.fortinet.com`
+- `fortiztp_host` which defaults to `https://fortiztp.forticloud.com`
 
 **Code**
 ```
