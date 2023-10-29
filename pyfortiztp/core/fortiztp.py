@@ -15,8 +15,8 @@ class FortiZTP(object):
 
         # Payload
         data = {
-            "username": self.api.forticloud_userid,
-            "password": self.api.forticloud_password,
+            "username": self.api.userid,
+            "password": self.api.password,
             "client_id": self.api.client_id,
             "grant_type": "password",
         }

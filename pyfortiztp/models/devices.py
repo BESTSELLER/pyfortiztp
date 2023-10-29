@@ -70,10 +70,10 @@ class Devices(FortiZTP):
                 device['region'] = region
 
             if provisionTarget == "FortiManager" or provisionTarget == "ExternalAC":
-                device['externalControllerIp'] = self.api.fmg_external_ip
+                device['externalControllerIp'] = externalControllerIp
 
             if provisionTarget == "FortiManager":
-                device['externalControllerSn'] = self.api.fmg_external_serial
+                device['externalControllerSn'] = externalControllerSn
 
             # Add device to list
             devices.append(device)

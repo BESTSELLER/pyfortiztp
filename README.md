@@ -13,17 +13,13 @@ Alternatively, you can clone the repo and run `python setup.py install`.
 ## Quick Start
 To begin, import pyfortiztp and instantiate the API.
 
-We need to provide our API credentials to our FortiCloud account.
-Additionally, we need to provide the external IP and serial number of our FortiManager instance.
+We need to provide our API credentials to our FortiCloud account. Optionally, its possible to set `forticloud_host` which defaults to `https://customerapiauth.fortinet.com`, `fortiztp_host` which defaults to `https://fortiztp.forticloud.com` and `client_id` which defaults to `fortiztp`.
 
 **Code**
 ```
 fortiztp = pyfortiztp.api(
-    forticloud_host = "https://customerapiauth.fortinet.com",
-    forticloud_userid = "<your forticloud userid>",
-    forticloud_password = "<your forticloud password>",
-    fmg_external_ip = "<external IP of your fortimanager>",
-    fmg_external_serial = "<serial number of your fortimanager>"
+    userid = "<your forticloud userid>",
+    password = "<your forticloud password>"
 )
 ```
 
@@ -52,15 +48,15 @@ print(devices)
 ### Provision a device to FortiManager.
 `deviceSN` is a list of serial numbers. In this example, we only test with a single device.
 
-The FortiZTP API returns the HTTP response "204 No Content" on success.
-
 **Code**
 ```
 update = fortiztp.devices.update(
     deviceSN = ["FGT60FTK1234ABCD"],
     deviceType = "FortiGate",
     provisionStatus = "provisioned",
-    provisionTarget = "FortiManager"
+    provisionTarget = "FortiManager",
+    externalControllerIp = "<external IP of your fortimanager>",
+    externalControllerSn = "<serial number of your fortimanager>"
 )
 print(update)
 ```
@@ -70,12 +66,10 @@ print(update)
 204
 ```
 
-> **Note:** You cannot provision the same device twice. You need to unprovision it first, before provisioning it again.
+> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
 
 ### Unprovision a device from FortiManager.
 `deviceSN` is a list of serial numbers. In this example, we only test with a single device.
-
-The FortiZTP API returns the HTTP response "204 No Content" on success.
 
 **Code**
 ```
@@ -83,7 +77,9 @@ update = fortiztp.devices.update(
     deviceSN = ["FGT60FTK1234ABCD"],
     deviceType = "FortiGate",
     provisionStatus = "unprovisioned",
-    provisionTarget = "FortiManager"
+    provisionTarget = "FortiManager",
+    externalControllerIp = "<external IP of your fortimanager>",
+    externalControllerSn = "<serial number of your fortimanager>"
 )
 print(update)
 ```
@@ -114,3 +110,5 @@ print(update)
     "error_description": "Device testSN doesn't exist in this account"
 }
 ```
+
+> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
