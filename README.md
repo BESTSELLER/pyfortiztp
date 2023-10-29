@@ -32,8 +32,8 @@ fortiztp = pyfortiztp.api(
 ### Retrieve a single devices.
 **Code**
 ```
-devices = fortiztp.devices.all(deviceSN="FGT60FTK1234ABCD")
-print(devices)
+device = fortiztp.devices.all(deviceSN="FGT60FTK1234ABCD")
+print(device)
 ```
 
 **Output**
@@ -50,8 +50,8 @@ print(devices)
 }
 ```
 
-### Provision a device to FortiManager.
-`deviceSN` is a list of serial numbers. In this example, we only test with a single device.
+### Provision one or more devices to FortiManager.
+`deviceSN` is a list of serial numbers. In this example, we only test with a single serial number.
 
 **Code**
 ```
@@ -73,8 +73,8 @@ print(update)
 
 > **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
 
-### Unprovision a device from FortiManager.
-`deviceSN` is a list of serial numbers. In this example, we only test with a single device.
+### Unprovision one or more devices from FortiManager.
+`deviceSN` is a list of serial numbers. In this example, we only test with a single serial number.
 
 **Code**
 ```
@@ -115,5 +115,3 @@ print(update)
     "error_description": "Device testSN doesn't exist in this account"
 }
 ```
-
-> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
