@@ -29,7 +29,7 @@ fortiztp = pyfortiztp.api(
 ```
 
 ## Examples
-### Retrieve a single devices.
+### Retrieve a single device.
 **Code**
 ```
 device = fortiztp.devices.all(deviceSN="FGT60FTK1234ABCD")
