@@ -52,11 +52,11 @@ print(devices)
 ### Provision a device to FortiManager.
 **Code**
 ```
-provision = fortiztp.devices.provision(
-    deviceSN="FGT60FTK1234ABCD",
-    deviceType="FortiGate",
-    provisionStatus="provisioned",
-    provisionTarget="FortiManager"
+provision = fortiztp.devices.update(
+    deviceSN = "FGT60FTK1234ABCD",
+    deviceType = "FortiGate",
+    provisionStatus = "provisioned",
+    provisionTarget = "FortiManager"
 )
 print(provision)
 ```
@@ -66,16 +66,16 @@ print(provision)
 204
 ```
 
-> **Note:** API returns the HTTP response "204 No Content" on success
+> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
 
 ### Unprovision a device from FortiManager.
 **Code**
 ```
-unprovision = fortiztp.devices.provision(
-    deviceSN="FGT60FTK1234ABCD",
-    deviceType="FortiGate",
-    provisionStatus="unprovisioned",
-    provisionTarget="FortiManager"
+unprovision = fortiztp.devices.update(
+    deviceSN = "FGT60FTK1234ABCD",
+    deviceType = "FortiGate",
+    provisionStatus = "unprovisioned",
+    provisionTarget = "FortiManager"
 )
 print(unprovision)
 ```
@@ -85,4 +85,4 @@ print(unprovision)
 204
 ```
 
-> **Note:** API returns the HTTP response "204 No Content" on success
+> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.

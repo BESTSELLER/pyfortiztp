@@ -22,7 +22,8 @@ setup(
     zip_safe=False,
     keywords=[
         "fortinet",
-        "pyfortiztp"
+        "forticloud",
+        "fortiztp"
     ],
     classifiers=[
         "Intended Audience :: Developers",

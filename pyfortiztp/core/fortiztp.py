@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import requests
 
 
@@ -12,14 +13,16 @@ class FortiZTP(object):
         """Login to FortiCloud.
         """
 
+        # Payload
         data = {
             "username": self.api.forticloud_userid,
             "password": self.api.forticloud_password,
-            "client_id": "fortiztp",
+            "client_id": self.api.client_id,
             "grant_type": "password",
         }
 
-        response = requests.post("https://customerapiauth.fortinet.com/api/v1/oauth/token/", json=data, verify=True)
+        # Send our request to the API
+        response = requests.post(f"{self.api.forticloud_host}/oauth/token/", json=data, verify=self.api.verify)
 
         # HTTP 200 OK
         if response.status_code == 200:
@@ -27,10 +30,55 @@ class FortiZTP(object):
                 self.api.access_token = response.json()['access_token']
                 self.api.expires_in = response.json()['expires_in']
                 self.api.refresh_token = response.json()['refresh_token']
-                return response.json()
+                self.api.timestamp = datetime.now()
             else:
                 self.api.access_token = None
                 self.api.expires_in = None
                 self.api.refresh_token = None
+                self.api.timestamp = None
+
+    def refresh_token(self):
+        """Refreshes our login token to FortiCloud.
+        """
+
+        # Make sure we have a refresh token
+        if self.api.refresh_token:
         
-        return response
+            # Payload
+            data = {
+                "refresh_token": self.api.refresh_token,
+                "client_id": self.api.client_id,
+                "grant_type": "password",
+            }
+
+            # Send our request to the API
+            response = requests.post(f"{self.api.forticloud_host}/oauth/token/", json=data, verify=self.api.verify)
+
+            # HTTP 200 OK
+            if response.status_code == 200:
+                if response.json():
+                    self.api.access_token = response.json()['access_token']
+                    self.api.expires_in = response.json()['expires_in']
+                    self.api.refresh_token = response.json()['refresh_token']
+                    self.api.timestamp = datetime.now()
+                else:
+                    self.login()
+            else:
+                self.login()
+        
+    def login_check(self):
+        """Checks if we have a valid login session.
+        """
+
+        # Make sure we have valid token credentials
+        if self.api.access_token and self.api.expires_in and self.api.refresh_token and self.api.timestamp:
+
+            # Check if our token has expired
+            if datetime.now() > self.api.timestamp+timedelta(seconds=self.api.expires_in):
+                self.refresh_token()
+            else:
+                pass
+
+        # Fallback to login
+        else:
+            self.login()

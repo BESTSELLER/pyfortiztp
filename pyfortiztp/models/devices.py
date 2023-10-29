@@ -16,21 +16,23 @@ class Devices(FortiZTP):
             deviceSN (str): Serial number of a specific device.
         """
 
-        self.login()
+        self.login_check()
 
-        url = self.api.host + f"/devices"
+        # API endpoint
+        url = self.api.fortiztp_host + f"/devices"
 
         # Get a specific device
         if deviceSN:
             url += f"/{deviceSN}"
 
-        response = requests.get(url, headers={'Authorization': 'Bearer ' + self.api.access_token}, verify=True)
+        # Send our request to the API
+        response = requests.get(url, headers={"Authorization": f"Bearer {self.api.access_token}"}, verify=self.api.verify)
         
         # HTTP 200 OK
         if response.status_code == 200:
             return response.json()
 
-    def provision(self, deviceType: str, deviceSN: str, provisionStatus: str, provisionTarget: str, region: str=None, externalControllerIp: str=None, externalControllerSn: str=None):
+    def update(self, deviceType: str, deviceSN: str, provisionStatus: str, provisionTarget: str, region: str=None, externalControllerIp: str=None, externalControllerSn: str=None):
         """Provisions or unprovisions a device.
 
         Args:
@@ -43,28 +45,28 @@ class Devices(FortiZTP):
             externalControllerIp (str): FQDN/IP. Needed for FortiManager or External AC provision.
         """
 
-        self.login()
+        self.login_check()
 
-        if provisionTarget == "FortiGateCloud" or provisionTarget == "FortiManagerCloud" or provisionTarget == "FortiLANCoud":
-            region = region
-
-        if provisionTarget == "FortiManager" or provisionTarget == "ExternalAC":
-            externalControllerIp = self.api.fmg_external_ip
-
-        if provisionTarget == "FortiManager":
-            externalControllerSn = self.api.fmg_external_serial
-
+        # Payload
         data = {
             "deviceType": deviceType,
             "deviceSN": deviceSN,
             "provisionStatus": provisionStatus,
-            "provisionTarget": provisionTarget,
-            "region": region,
-            "externalControllerIp": externalControllerIp,
-            "externalControllerSn": externalControllerSn
+            "provisionTarget": provisionTarget
         }
 
-        response = requests.put(self.api.host + f"/devices/{deviceSN}/", headers={'Authorization': 'Bearer ' + self.api.access_token}, json=data, verify=True)
+        # Optional fields
+        if provisionTarget == "FortiGateCloud" or provisionTarget == "FortiManagerCloud" or provisionTarget == "FortiLANCoud":
+            data['region'] = region
+
+        if provisionTarget == "FortiManager" or provisionTarget == "ExternalAC":
+            data['externalControllerIp'] = self.api.fmg_external_ip
+
+        if provisionTarget == "FortiManager":
+            data['externalControllerSn'] = self.api.fmg_external_serial
+
+        # Send our request to the API
+        response = requests.put(self.api.fortiztp_host + f"/devices/{deviceSN}/", headers={"Authorization": f"Bearer {self.api.access_token}"}, json=data, verify=self.api.verify)
 
         # API returns 204 No Content on successful request        
         if response.status_code == 204:
