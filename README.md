@@ -56,13 +56,13 @@ The FortiZTP API returns the HTTP response "204 No Content" on success.
 
 **Code**
 ```
-provision = fortiztp.devices.update(
+update = fortiztp.devices.update(
     deviceSN = ["FGT60FTK1234ABCD"],
     deviceType = "FortiGate",
     provisionStatus = "provisioned",
     provisionTarget = "FortiManager"
 )
-print(provision)
+print(update)
 ```
 
 **Output**
@@ -79,13 +79,13 @@ The FortiZTP API returns the HTTP response "204 No Content" on success.
 
 **Code**
 ```
-unprovision = fortiztp.devices.update(
+update = fortiztp.devices.update(
     deviceSN = ["FGT60FTK1234ABCD"],
     deviceType = "FortiGate",
     provisionStatus = "unprovisioned",
     provisionTarget = "FortiManager"
 )
-print(unprovision)
+print(update)
 ```
 
 **Output**
@@ -98,13 +98,13 @@ Error messages are provided as is, from the FortiZTP API.
 
 **Code**
 ```
-unprovision = fortiztp.devices.update(
+update = fortiztp.devices.update(
     deviceSN = ["FGT60FTK1234ABCD", "testSN"],
     deviceType = "FortiGate",
-    provisionStatus = "unprovisioned",
+    provisionStatus = "provisioned",
     provisionTarget = "FortiManager"
 )
-print(unprovision)
+print(update)
 ```
 
 **Output**
