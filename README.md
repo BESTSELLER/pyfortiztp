@@ -50,10 +50,14 @@ print(devices)
 ```
 
 ### Provision a device to FortiManager.
+`deviceSN` is a list of serial numbers. In this example, we only test with a single device.
+
+The FortiZTP API returns the HTTP response "204 No Content" on success.
+
 **Code**
 ```
 provision = fortiztp.devices.update(
-    deviceSN = "FGT60FTK1234ABCD",
+    deviceSN = ["FGT60FTK1234ABCD"],
     deviceType = "FortiGate",
     provisionStatus = "provisioned",
     provisionTarget = "FortiManager"
@@ -66,13 +70,17 @@ print(provision)
 204
 ```
 
-> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
+> **Note:** You cannot provision the same device twice. You need to unprovision it first, before provisioning it again.
 
 ### Unprovision a device from FortiManager.
+`deviceSN` is a list of serial numbers. In this example, we only test with a single device.
+
+The FortiZTP API returns the HTTP response "204 No Content" on success.
+
 **Code**
 ```
 unprovision = fortiztp.devices.update(
-    deviceSN = "FGT60FTK1234ABCD",
+    deviceSN = ["FGT60FTK1234ABCD"],
     deviceType = "FortiGate",
     provisionStatus = "unprovisioned",
     provisionTarget = "FortiManager"
@@ -85,4 +93,24 @@ print(unprovision)
 204
 ```
 
-> **Note:** The FortiZTP API returns the HTTP response "204 No Content" on success.
+### Error messages.
+Error messages are provided as is, from the FortiZTP API.
+
+**Code**
+```
+unprovision = fortiztp.devices.update(
+    deviceSN = ["FGT60FTK1234ABCD", "testSN"],
+    deviceType = "FortiGate",
+    provisionStatus = "unprovisioned",
+    provisionTarget = "FortiManager"
+)
+print(unprovision)
+```
+
+**Output**
+```
+{
+    "error": "invalid_request",
+    "error_description": "Device testSN doesn't exist in this account"
+}
+```
