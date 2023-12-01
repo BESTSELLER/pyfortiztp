@@ -9,7 +9,7 @@ class Devices(FortiZTP):
     def __init__(self, **kwargs):
         super(Devices, self).__init__(**kwargs)
 
-    def all(self, deviceSN: str=None):
+    def all(self, deviceSN: str = None):
         """Retrieves the status of a device.
 
         Args:
@@ -27,12 +27,17 @@ class Devices(FortiZTP):
 
         # Send our request to the API
         response = requests.get(url, headers={"Authorization": f"Bearer {self.api.access_token}"}, verify=self.api.verify)
-        
+
         # HTTP 200 OK
         if response.status_code == 200:
             return response.json()
+        else:
+            try:
+                return response.json()
+            except Exception:
+                return response
 
-    def update(self, deviceSN: list, deviceType: str, provisionStatus: str, provisionTarget: str, region: str=None, externalControllerIp: str=None, externalControllerSn: str=None):
+    def update(self, deviceSN: list, deviceType: str, provisionStatus: str, provisionTarget: str, region: str = None, externalControllerIp: str = None, externalControllerSn: str = None):
         """Provisions or unprovisions a device.
 
         Args:
@@ -81,8 +86,11 @@ class Devices(FortiZTP):
         # Send our request to the API
         response = requests.put(self.api.fortiztp_host + f"/devices", headers={"Authorization": f"Bearer {self.api.access_token}"}, json=devices, verify=self.api.verify)
 
-        # API returns 204 No Content on successful request        
-        if response.status_code == 204:
+        # API returns 200 OK on successful request
+        if response.status_code == 200:
             return response.status_code
         else:
-            return response.json()
+            try:
+                return response.json()
+            except Exception:
+                return response
